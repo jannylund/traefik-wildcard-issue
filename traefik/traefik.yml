@@ -15,10 +15,18 @@ entryPoints:
   websecure:
     address: :443
 
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+  stores:
+    default:
+      defaultGeneratedCert:
+        resolver: myresolver
+        domain:
+          main: "*.example.com"
+
 providers:
-  file:
-    directory: /etc/traefik/dynamic
-    watch: true
   docker:
     exposedByDefault: false
     defaultRule: "Host(`{{ index .Labels \"com.docker.compose.service\" }}.example.com`)"
