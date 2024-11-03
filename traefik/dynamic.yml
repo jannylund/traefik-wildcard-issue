@@ -1,0 +1,10 @@
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+  stores:
+    default:
+      defaultGeneratedCert:
+        resolver: myresolver
+        domain:
+          main: "*.example.com"

@@ -1,0 +1,25 @@
+services:
+  traefik:
+    image: traefik:v3.2.0
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
+      - ./traefik/dynamic.yml:/etc/traefik/dynamic/dynamic.yml
+      - ./traefik/acme.json:/acme.json
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - traefik.http.routers.traefik.tls=true
+    env_file:
+      - .env
+    environment:
+      - DO_AUTH_TOKEN
+
+  nginx:
+    image: nginx:alpine
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nginx.tls=true
